@@ -1,5 +1,0 @@
-numpy>=1.24
-matplotlib
-qutip>=5.0
-networkx
-scipy
