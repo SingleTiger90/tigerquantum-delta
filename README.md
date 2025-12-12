@@ -1,7 +1,7 @@
 # TigerQuantum Δ – Energy-Efficient Quantum-Classical AI
 
 Author: Vladyslav Honcharov  
-From: Sumy, Ukraine (evacuating with children Eva 11 y.o. and Lev 6 y.o.)  
+From: Sumy, Ukraine 
 Contact: giovanigentile90@gmail.com/ X @SingleTiger90  
 
 ## Project Overview
