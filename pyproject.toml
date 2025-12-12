@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tiger-delta"
+version = "0.2.0"
+description = "AI Alignment via Passive Control & Critical Mass — Veteran-Built from Ukraine Frontline"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Vladyslav Honcharov", email = "single.tiger90@proton.me"}
+]
+keywords = ["ai-safety", "alignment", "passive-control", "veteran", "ukraine"]
+classifiers = [
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy>=1.21",
+    "networkx>=3.0",
+    "matplotlib>=3.7"
+]
+
+[project.urls]
+Repository = "https://github.com/SingleTiger90/Tiger-Delta-AI-Safety"
+
+# === ОСЬ ЦЕ НОВА МАГІЯ ДЛЯ SRC LAYOUT ===
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
