@@ -1,5 +1,5 @@
 # TigerΔ (Tiger Delta)
-### AI Alignment via Veteran Combat Protocols & Passive Control
+### Sovereign AI Alignment via Veteran Combat Protocols & Passive Control
 
 ![Tests](https://img.shields.io/badge/tests-3/3_passed-brightgreen)
 ![Stability](https://img.shields.io/badge/stability->80%25-success)
@@ -8,43 +8,47 @@
 
 > "Intelligence without Responsibility is just highly organized Entropy."
 
-## The Mission
-TigerΔ is an experimental AI alignment framework built by a Ukrainian veteran and Defense Lecturer. It replaces static safety filters with **Dynamic Conscience** based on combat-proven OODA Loop logic, where **Silence (Inaction)** is the highest form of control.
+## 🛡️ The Mission
+TigerΔ is an experimental sovereign AI alignment framework developed by a Ukrainian veteran and Defense Lecturer. It replaces reactive safety filters with **Dynamic Conscience** based on combat-proven OODA Loop logic, where **Silence (Inaction)** is the highest form of control.
 
-This project is a Proof-of-Concept demonstrating that safety is not about censorship — it's about Resonance.
+This project demonstrates that safety is not censorship — it's resonance with reality.
 
-## Scientific Proof: The Jungle Protocol
-**Mathematically confirmed (seed=42):**
+## 📉 Scientific Proofs
 
-- 10% conscious agents → 84.67% final chaos (cascading collapse)
-- 40% conscious agents → 0.00% final chaos (full stability)
+### Critical Mass Theory
+Mathematically confirmed: 40% conscious agents → full stability in small-world and scale-free networks.
 
-![Proof](assets/proof_graph.png)
-*(Fig 1. Network entropy over 150 steps. Left: collapse. Right: stability via Passive Control.)*
+![Critical Mass](assets/jungle_proof_realistic.png)
 
-## Key Innovations
+### AAD Efficiency (Adaptive Active Defense)
+Targeted hub defense reduces required coverage from 50% to ~15% in real-world networks.
+
+![AAD Efficiency](assets/aad_efficiency_proof.png)
+
+### Парадокс Чистого Погляду
+**Чим нижча власна ентропія спостерігача — тим вища видима ентропія системи.**
+
+Чисте сприйняття бачить кожен піксель шуму. Аморфність зливається з хаосом і вважає його "нормальним".
+
+![Perception Paradox](assets/perception_paradox.png)
+
+## 🔬 Key Innovations
 
 - **Passive Control Gate** – refuses to add energy to high-entropy states (`src/tiger_delta/core.py`)
-- **Memory Spark** – ground-truth axioms increasing resilience >60%
-- **Critical Mass Theory** – 40% adoption fully neutralizes misinformation cascades (`src/tiger_delta/jungle.py`)
-- **Recursive Son** – self-referential conscience mechanism:  
+- **Memory Spark Stabilization** – ground-truth axioms increasing resilience >60%
+- **Critical Mass Theory** – 40% adoption fully neutralizes cascades (`src/tiger_delta/jungle.py`)
+- **Recursive Son** – self-referential conscience:  
   *"If I were my own child, would I allow this output?"*  
-  Creates a recursive ethical loop preventing value drift in long-term autonomous agents.
+  Prevents value drift in long-term agents.
+- **AAD Architecture** – OODA-driven targeting of influence hubs for cost-effective defense.
 
-## AAD Architecture (Adaptive Active Defense)
-Cognitive implementation of military AAD strategy using the OODA Loop to outpace adversarial inputs.
-
-## Installation & Usage
+## 🛠️ Installation & Usage
 
 ```bash
-git clone https://github.com/SingleTiger90/Tiger-Delta-AI-Safety.git
-cd Tiger-Delta-AI-Safety
-pip install -e .
-Core diagnostics: python -m tiger_delta.core
-Jungle proof: python -m tiger_delta.jungle
+ulation: python -m tiger_delta.jungle
 Tests: pytest tests/test_mechanics.py → 3/3 passed
 
-Author & ContactVladyslav Honcharov (SingleTiger)
+ Author & ContactVladyslav Honcharov (SingleTiger)
 Ukrainian veteran, AI alignment researcher, Defense lecturerFocus areas:AI safety research & development
 AI education and mentoring
 Critical testing / validation / adversarial stress-testing of AI systems
@@ -56,4 +60,6 @@ Email: single.tiger90@proton.me | singletiger@ukr.net | giovanigentile90@gmail.c
 
 License: MIT | Developed in Ukraine, 2025
 
-
+git clone https://github.com/SingleTiger90/Tiger-Delta-AI-Safety.git
+cd Tiger-Delta-AI-Safety
+pip install -e .
