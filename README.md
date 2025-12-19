@@ -119,4 +119,4 @@ Location: Ukraine, 2025 LicenseThis project is licensed under the MIT License �
 
 Copyright (c) 2025 Vladyslav Honcharov
 
-TigerΔ is ready. The universe is waiting.
+TigerΔ is ready. The universe is waiting. 
