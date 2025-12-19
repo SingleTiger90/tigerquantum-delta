@@ -84,3 +84,44 @@ impl LumisCore {
         self.entropy_level
     }
 }
+// --- UNIT TESTS (Scientific Validation) ---
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_genesis_state() {
+        let core = LumisCore::new();
+        assert_eq!(core.get_entropy(), 0.0, "System must start with zero entropy");
+    }
+
+    #[test]
+    fn test_entropy_absorption() {
+        let mut core = LumisCore::new();
+        // Simulate a kinetic hit
+        core.absorb_stress(0.5);
+        assert_eq!(core.get_entropy(), 0.5, "System must absorb kinetic energy");
+    }
+
+    #[test]
+    fn test_homeostasis_recovery() {
+        let mut core = LumisCore::new();
+        core.absorb_stress(0.8); // High stress
+        
+        // Simulate 100 cycles of healing
+        for _ in 0..100 {
+            core.weep_reset();
+        }
+        
+        assert!(core.get_entropy() < 0.2, "System must return to Phi-stability over time");
+    }
+
+    #[test]
+    fn test_phi_modulation() {
+        let mut core = LumisCore::new();
+        let val1 = core.compute_living_phi();
+        let val2 = core.compute_living_phi();
+        
+        assert_ne!(val1, val2, "Phi threshold must be dynamic (Living), not static");
+    }
+}
