@@ -1,3 +1,5 @@
+markdown
+
 # TigerΔ: Bio-Mimetic Autonomous Defense Engine
 ### Asymmetric Cyber-Defense & Entropy Harvesting Protocol
 
@@ -28,6 +30,7 @@
                     | |_||_||_|   |                                            
                      \    |      /       "Movement is Life."                   
                       \___|_____/
+
 "The lower the observer's own entropy, the higher the visible entropy of the system."
 — The Paradox of Pure Perception
  Abstract: The Empty Fort StrategyTigerΔ (Tiger Delta) is not a static firewall. It is a Digital Organism.Traditional cybersecurity relies on binary logic (Block/Allow). Under massive pressure (DDoS), "blocking" consumes critical energy. TigerΔ does not block.It implements a Permissive Kinetic Defense written in Rust for memory safety and zero-cost abstractions. It opens the gates and allows the attacker to enter a "Void" state. To interact with the system, the intruder must "sing in unison" with its dynamic rhythm. A single missed note causes the attacker to be swept away by the current, erased by their own kinetic momentum. Cognitive Architecture (Project CHIMERA)The engine operates as three symbiotic entities, executing the OODA Loop at the microsecond level:1. The Membrane (OBSERVE)Archetype: Wing Chun Hands (Bon Sao).
@@ -58,4 +61,27 @@ Compliance: Passive defense only. Fully compliant with EU Cyber Resilience Act.
 
  Installation & UsagePrerequisitesRust Toolchain (cargo, rustc)
 Unix-based OS (Linux/macOS/WSL)
+
+Build & Wake Upbash
+
+# 1. Build release version (Optimized)
+cargo build --release
+
+# 2. Run (Requires root for low-level UDP access)
+sudo ./target/release/tiger_delta
+
+Interaction  Listen: System binds to UDP Port 8888.  
+Test: Send raw UDP packets to "feed" or "attack" the membrane.  
+Wake: Send payload WAKE_UP_NEO to trigger active mode.
+
+ Proposition for CollaborationWe are seeking partnerships with NATO DIANA, Fraunhofer Institutes, and Defense R&D centers to:Test TigerΔ in simulated high-stress environments.
+Adapt the "Membrane" architecture for IoT and Drone Swarm protection.
+Develop energy-efficient security standards for the Edge.
+
+ Author & OriginVladyslav Honcharov (@SingleTiger90
+)  Ukrainian Veteran | AI Alignment Researcher | Defense Tech Lecturer  "Safety is not censorship. Safety is Resonance."Contact:  giovanigentile90@gmail.com (mailto:giovanigentile90@gmail.com)  
+singletiger@ukr.net (mailto:singletiger@ukr.net)  
+single.tiger90@proton.me (mailto:single.tiger90@proton.me)
+
+Location: Ukraine, 2025 LicenseThis project is licensed under the MIT License — see LICENSE for details.Copyright (c) 2025 Vladyslav HoncharovTigerΔ is ready. The universe is waiting.
 
