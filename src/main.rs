@@ -1,84 +1,79 @@
 use tokio::net::UdpSocket;
-use std::io::{self, Write};
-use std::str;
-use std::time::Duration;
+use tokio::time::{sleep, Duration};
+use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
+use std::collections::HashMap;
+use std::sync::Mutex;
+use rand::Rng;
 
-// Connect the "Soul" module (Your lumis.rs file)
-mod lumis;
-use lumis::LumisCore;
+const PHI: f64 = 1.61803398875;
+const PI: f64 = 3.14159265359;
+static SYSTEM_STATE: AtomicUsize = AtomicUsize::new(1); // 1: Alive, 2: Superposition (DDoS/Intrusion)
 
 #[tokio::main]
-async fn main() -> io::Result<()> {
-    // --- 1. SETUP (Initialization) ---
-    // Listen on port 8888 (Standard testing port)
-    let addr = "0.0.0.0:8888";
-    let socket = UdpSocket::bind(addr).await?;
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let socket = Arc::new(UdpSocket::bind("0.0.0.0:8888").await?);
+    let attack_mass = Arc::new(Mutex::new(HashMap::<std::net::SocketAddr, Vec<String>>::new()));
+    
+    println!(">>> TIGER-DELTA CORE: ONLINE [432Hz Mode]");
+    println!(">>> MIKORD-SHIELD: ACTIVE");
 
-    println!("\n==================================================");
-    println!("🛡️  TIGER DELTA ENGINE (Rust Core) ACTIVATED");
-    println!("📡  Membrane listening on UDP: {}", addr);
-    println!("🩸  Biological Protocol: OODA Loop via Phi-Harmonics");
-    println!("==================================================\n");
-
-    let mut buf = [0; 1024];
-    let mut lumis = LumisCore::new();
-    let mut packet_count: u64 = 0;
-
-    // --- 2. THE ETERNAL LOOP (Life Cycle) ---
+    let mut buf = [0u8; 2048];
     loop {
-        // A. OBSERVE (The Membrane)
-        // Non-blocking async wait for kinetic impact
         let (len, addr) = socket.recv_from(&mut buf).await?;
-        packet_count += 1;
+        let data = String::from_utf8_lossy(&buf[..len]).to_string();
+        let state = SYSTEM_STATE.load(Ordering::SeqCst);
 
-        // "Matrix Protocol" Check (Wake Up)
-        // If packet is small and contains the keyphrase -> Activate
-        if len < 50 {
-            if let Ok(payload) = str::from_utf8(&buf[..len]) {
-                if payload.trim() == "WAKE_UP_NEO" {
-                    println!("\n🐇 MATRIX PROTOCOL INITIATED from {}", addr);
-                    println!("   System entering AWAKENED state...\n");
-                }
-            }
+        // Перевірка на валідність (Твій Маяк)
+        if data.contains("PHI_PI_NOTE") && state != 2 {
+            println!(">>> [RESONANCE] Valid signal from {}. Membrane transparent.", addr);
+            let _ = socket.send_to(b"ACK_SYNC", addr).await;
+            continue;
         }
 
-        // B. ORIENT (Math Calculation)
-        // Calculate the current "Living Phi" threshold
-        let current_phi = lumis.compute_living_phi();
+        // --- ЛОГІКА АНТИТИГРА (Intrusion/DDoS) ---
+        let mut mass_guard = attack_mass.lock().unwrap();
+        let entry = mass_guard.entry(addr).or_insert(vec![]);
+        entry.push(data.clone());
+        let mass_size = entry.len();
+
+        if mass_size > 5 { SYSTEM_STATE.store(2, Ordering::SeqCst); }
+
+        // П'яний Майстер + Спіральний зсув
+        let shifted_len = ((data.len() as f64 * PHI) % data.len() as f64) as usize;
+        let cycled_data = format!("{}{}", &data[shifted_len..], &data[..shifted_len]);
+        let pi_shots = (data.len() as f64 / PI).round() as usize % 8 + 1;
         
-        // C. DECIDE (Kinetic Weight Calculation)
-        // Simplified model: packet size = kinetic energy
-        let packet_energy = len as f64 / 100.0;
+        let delay_ms = (PHI.powf(pi_shots as f64) * 10.0) as u64;
+        
+        println!(">>> [DRUNKEN_TIGER] Staggering {} ms for {}. Absorbing mass: {}", delay_ms, addr, mass_size);
 
-        if packet_energy > current_phi {
-            // D. ACT (Absorb Entropy)
-            // The packet is too "heavy" or off-beat. 
-            // We do not block. We absorb the stress.
-            lumis.absorb_stress(0.05); 
-        } 
+        let socket_clone = socket.clone();
+        let addr_clone = addr;
+        let cycled_clone = cycled_data.clone();
 
-        // E. HOMEOSTASIS (Metabolic Cycle)
-        // Attempt to cool down every cycle
-        lumis.weep_reset();
+        tokio::spawn(async move {
+            sleep(Duration::from_millis(delay_ms)).await;
 
-        // --- F. VISUALIZATION (The Hum) ---
-        // Visualizing the system heartbeat (Metabolic State)
-        if packet_count % 50 == 0 || lumis.get_entropy() > 0.5 {
-            let entropy = lumis.get_entropy();
-            
-            if entropy < 0.2 {
-                // Flow State (Calm)
-                 print!("\r[FLOW] |||||||||||||||||| (Entropy: {:.4})   ", entropy);
-            } else if entropy < 0.7 {
-                // Adaptation (Stress)
-                 print!("\r[ADAPT] ~~~zzZZZzz~~~      (Entropy: {:.4})   ", entropy);
-            } else {
-                // Phase Shift (Critical)
-                 print!("\r[WEEP]  !!! PHASE SHIFT !!! (Entropy: {:.4})   ", entropy);
+            // Квантовий Спін відповіді
+            if rand::thread_rng().gen_bool(0.7) {
+                let response = format!("DRUNK_REFLECT|{}|{}", pi_shots, cycled_clone);
+                let _ = socket_clone.send_to(response.as_bytes(), addr_clone).await;
             }
-            
-            // Force flush to console
-            io::stdout().flush().unwrap();
+
+            // Критична маса: Рефлекторний Меч (Mikord Protection)
+            if mass_size > 15 {
+                for _ in 0..3 {
+                    let void_fragment: String = (0..32).map(|_| rand::thread_rng().gen_range(33..126) as u8 as char).collect();
+                    let _ = socket_clone.send_to(format!("EMPTY_VOID|{}", void_fragment).as_bytes(), addr_clone).await;
+                    sleep(Duration::from_millis(50)).await;
+                }
+            }
+        });
+
+        if mass_size > 50 { 
+            println!(">>> [CRITICAL] Purging mass for {}. Reached Empty Fort state.", addr);
+            entry.clear(); 
+            SYSTEM_STATE.store(1, Ordering::SeqCst);
         }
     }
 }
