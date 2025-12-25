@@ -1,99 +1,126 @@
-/*
- * PROJECT: TIGER-DELTA (TΔ) - SOVEREIGN VERSION
- * FOUNDER: SingleTiger90 (Legacy of the Father's Apparatus)
- * STATUS: MANDATORY RESONANCE
- * * MANIFESTO:
- * We do not create for the masses. We create for the Individual.
- * In a world of total registry, we choose the Superposition.
- * If you approach with peace, you find the Light (PHI/PI).
- * If you approach with force, you find the ANTITIGER.
- * YES is NO. NO is YES. We are the wave, not the particle.
- */
+use getrandom::getrandom;
+use std::time::{Duration, Instant};
 
-use tokio::net::UdpSocket;
-use tokio::time::{sleep, Duration, Instant};
-use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
-use std::collections::HashMap;
-use std::sync::Mutex;
-use rand::Rng;
+// Fixed-point constants (Q32.32 format — 32 bits integer part, 32 bits fractional)
+// Scale: 1 << 32 = 4_294_967_296
+const FIXED_SCALE: i64 = 1i64 << 32;
+const PI_FIXED: i64 = 3373259426i64;     // ≈ π * 2^32
+const PHI_FIXED: i64 = 6941587532i64;    // ≈ φ * 2^32 (golden ratio)
+const ONE_FIXED: i64 = FIXED_SCALE;      // 1.0 in fixed-point
 
-// --- SACRED GEOMETRY CONSTANTS ---
-const PHI: f64 = 1.61803398875;
-const PI: f64 = 3.14159265359;
+// Nonce refresh period (e.g., every 5 seconds — balance between security and performance)
+const NONCE_EPOCH: Duration = Duration::from_secs(5);
 
-// --- QUANTUM STATES ---
-// 1: TIGER (Active Resonance / Home)
-// 2: ANTITIGER (Spin-Flip / Total Void)
-static SYSTEM_STATE: AtomicUsize = AtomicUsize::new(1);
-
-/// LUMIS COHERENCE: The pulse of the Father's Apparatus.
-/// If the observer (hacker) breaks the rhythm, the wave function collapses.
-fn check_lumis_resonance(freq: f64, delta_t: f64) -> f64 {
-    let wave = PHI * (freq / PI).sin().abs();
-    let drift = (delta_t - wave).abs();
-    // YES is NO if drift > 0.08 (The threshold of the Soul)
-    if drift < 0.08 { 1.0 } else { 0.0 }
+pub struct StringState {
+    nonce: u64,
+    last_update: Instant,
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let socket = Arc::new(UdpSocket::bind("0.0.0.0:8888").await?);
-    let sync_map = Arc::new(Mutex::new(HashMap::<std::net::SocketAddr, Instant>::new()));
-    
-    println!(">>> TIGER-DELTA ONLINE | THE LIGHTHOUSE IS BURNING");
-    println!(">>> VERSION: SOVEREIGN (1.0.0)");
+impl StringState {
+    pub fn new() -> Self {
+        let mut state = Self {
+            nonce: 0,
+            last_update: Instant::now().checked_sub(Duration::from_secs(100)).unwrap(),
+        };
+        state.refresh_nonce();
+        state
+    }
 
-    let mut buf = [0u8; 2048];
-
-    loop {
-        let (len, addr) = socket.recv_from(&mut buf).await?;
-        let now = Instant::now();
-        let payload = String::from_utf8_lossy(&buf[..len]);
-        let parts: Vec<&str> = payload.split('|').collect();
-
-        // --- THE ANTITIGER LOGIC (SPIN-FLIP) ---
-        // If the system state is COLLAPSED, we return the VOID.
-        if SYSTEM_STATE.load(Ordering::SeqCst) == 2 {
-            // "You looked at the cat. The cat is dead." - Enjoy the random noise.
-            let mut rng = rand::thread_rng();
-            let noise: [u8; 64] = rng.gen();
-            sleep(Duration::from_millis((PHI * 10.0) as u64)).await;
-            let _ = socket.send_to(&noise, addr).await;
-            continue;
-        }
-
-        // --- THE TIGER LOGIC (RESONANCE) ---
-        if parts.len() >= 2 && parts[0] == "PHI_PI_NOTE" {
-            let freq: f64 = parts[1].parse().unwrap_or(0.0);
-            
-            let mut s_map = sync_map.lock().unwrap();
-            let delta_t = s_map.get(&addr).map(|t| now.duration_since(*t).as_secs_f64()).unwrap_or(0.0);
-            s_map.insert(addr, now);
-
-            let coherence = check_lumis_resonance(freq, delta_t);
-
-            if coherence > 0.9 {
-                // HOME FREQUENCY DETECTED
-                println!("[TIGER] Resonance valid from {}", addr);
-                let _ = socket.send_to(b"STATUS_SYNCED_IN_SUPERPOSITION", addr).await;
-            } else {
-                // DISSONANCE DETECTED: TRIPPING THE ANTITIGER
-                println!("[ANTITIGER] Dissonance. Initiating Spin-Flip for {}", addr);
-                SYSTEM_STATE.store(2, Ordering::SeqCst);
-                
-                // Final message to the observer before the void
-                let _ = socket.send_to(b"ANTITIGER_ENGAGED: YES_IS_NO", addr).await;
-            }
-        } else {
-            // Non-harmonic noise is ignored. We do not exist for the world.
-            println!("[VOID] Ignoring non-resonant mass from {}", addr);
-        }
-
-        // --- AUTOMATIC RESET (THE CYCLE OF REBIRTH) ---
-        // Every 200 packets, the system tries to find the Light again.
-        if len % 13 == 0 && SYSTEM_STATE.load(Ordering::SeqCst) == 2 {
-             SYSTEM_STATE.store(1, Ordering::SeqCst);
-             println!("[REBIRTH] Seeking PHI again...");
+    /// Updates nonce if the epoch has passed
+    pub fn ensure_fresh_nonce(&mut self) {
+        if self.last_update.elapsed() >= NONCE_EPOCH {
+            self.refresh_nonce();
         }
     }
+
+    /// Refresh nonce using hardware RNG
+    fn refresh_nonce(&mut self) {
+        let mut buf = [0u8; 8];
+        // getrandom works in user-space; in eBPF, replace with rdtsc + ktime + per-cpu counter
+        if getrandom(&mut buf).is_ok() {
+            self.nonce = u64::from_le_bytes(buf);
+        } else {
+            // Fallback (rarely used)
+            self.nonce = self.nonce.wrapping_add(1);
+        }
+        self.last_update = Instant::now();
+    }
+
+    /// Fixed-point sin approximation using Taylor series (up to 7th order) — accurate enough and fast
+    /// Input: angle in fixed-point [0, 2π) → [0, 2^33)
+    fn sin_fixed(mut x: i64) -> i64 {
+        // Reduce to [-π, π]
+        x %= 2 * PI_FIXED;
+        if x > PI_FIXED {
+            x -= 2 * PI_FIXED;
+        }
+        if x < -PI_FIXED {
+            x += 2 * PI_FIXED;
+        }
+
+        // Taylor: sin(x) ≈ x - x^3/6 + x^5/120 - x^7/5040
+        let x2 = (x * x) >> 32;
+        let x3 = (x2 * x) >> 32;
+        let x5 = (x3 * x2) >> 32;
+        let x7 = (x5 * x2) >> 32;
+
+        let term1 = x;
+        let term3 = (x3 * 716861901) >> 32;     // 1/6 ≈ 0.1666666667 * 2^32
+        let term5 = (x5 * 35791394) >> 32;      // 1/120 ≈ 0.0083333333 * 2^32
+        let term7 = (x7 * 1429388) >> 32;        // 1/5040 ≈ 0.0001984127 * 2^32
+
+        term1 - term3 + term5 - term7
+    }
+
+    /// Main compactification function (data folding) in fixed-point
+    /// Input: array of 10 normalized attributes as i64 in [0, ONE_FIXED)
+    pub fn compactify(&mut self, attributes: &[i64; 10]) -> i64 {
+        self.ensure_fresh_nonce();
+
+        let mut sum: i64 = 0;
+
+        for (i, &a_i) in attributes.iter().enumerate() {
+            // a_i + nonce (extend nonce to i64)
+            let a_nonce = a_i.wrapping_add(self.nonce as i64);
+
+            // (a_i + nonce) * π
+            let scaled = (a_nonce * PI_FIXED) >> 32;
+
+            // sin(scaled)
+            let sin_val = Self::sin_fixed(scaled);
+
+            // sin_val * φ
+            let contrib = (sin_val * PHI_FIXED) >> 32;
+
+            // Add with index for additional diffusion
+            let idx_offset = ((i as i64) * 123456789i64) << 16; // scaled shift
+            sum = sum.wrapping_add(contrib.wrapping_add(idx_offset));
+        }
+
+        // Final mod 1 → return fractional part
+        sum.rem_euclid(ONE_FIXED)
+    }
+}
+
+// Example usage in main
+fn main() {
+    let mut state = StringState::new();
+
+    // Normalized packet attributes (e.g., IP, port, size etc. → [0, 1.0))
+    let attrs: [i64; 10] = [
+        ((0.1 * FIXED_SCALE as f64) as i64),
+        ((0.23 * FIXED_SCALE as f64) as i64),
+        ((0.45 * FIXED_SCALE as f64) as i64),
+        ((0.67 * FIXED_SCALE as f64) as i64),
+        ((0.89 * FIXED_SCALE as f64) as i64),
+        ((0.12 * FIXED_SCALE as f64) as i64),
+        ((0.34 * FIXED_SCALE as f64) as i64),
+        ((0.56 * FIXED_SCALE as f64) as i64),
+        ((0.78 * FIXED_SCALE as f64) as i64),
+        ((0.90 * FIXED_SCALE as f64) as i64),
+    ];
+
+    let compact = state.compactify(&attrs);
+    println!("Compact scalar (fixed-point): {}", compact);
+    println!("As float: {:.10}", compact as f64 / FIXED_SCALE as f64);
 }
