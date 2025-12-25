@@ -1,17 +1,42 @@
+# CITATION.cff
+# Citation File Format (v1.2.0) — https://citation-file-format.github.io/
+# This file tells researchers, journals, and tools how to properly cite TigerΔ.
+
 cff-version: 1.2.0
-message: "If you use this software or methodology, please cite it as below."
+message: "If you use this software, methodology, or bio-mimetic defense principles in your work, please cite it as below."
 authors:
-- family-names: "Honcharov"
-  given-names: "Vladyslav"
-  alias: "SingleTiger"
-  email: "giovanigentile90@gmail.com"
-title: "TigerΔ (Tiger Delta): AI Alignment via Veteran Combat Protocols"
-version: 0.2.0
-date-released: 2025-12-12
+  - family-names: "Honcharov"
+    given-names: "Vladyslav"
+    alias: "SingleTiger90"
+    email: "giovanigentile90@gmail.com"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # Uncomment and add your ORCID if you have one
+
+title: "TigerΔ (Tiger Delta): Bio-Mimetic Autonomous Cyber Defense Engine Using OODA Loop and Phi-Harmonics"
+abstract: >
+  TigerΔ is an experimental bio-inspired cybersecurity system that implements adaptive, entropy-driven defense
+  mechanisms based on the golden ratio (φ), π-modulation, and veteran-derived asymmetric resilience protocols.
+  The architecture follows a microsecond-scale OODA loop with privacy-first, stateless operation,
+  designed for low-resource environments such as edge computing, IoT devices, and autonomous systems.
+
+version: 0.3.0
+date-released: 2025-12-25
+doi: 10.5281/zenodo.XXXXXXX  # Replace with real DOI after archiving on Zenodo (or remove until you get one)
 url: "https://github.com/SingleTiger90/Tiger-Delta-AI-Safety"
+repository-code: "https://github.com/SingleTiger90/Tiger-Delta-AI-Safety"
+license: MIT
+
 keywords:
   - ai-safety
+  - ai-alignment
+  - cybersecurity
+  - bio-mimetic
   - ooda-loop
-  - passive-control
+  - phi-harmonics
+  - string-defense
+  - passive-defense
+  - kinetic-reflection
   - veteran-tech
-license: MIT
+  - edge-security
+  - cyber-resilience
+  - autonomous-systems
+  - privacy-first
